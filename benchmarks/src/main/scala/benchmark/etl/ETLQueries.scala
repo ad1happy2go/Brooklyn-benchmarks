@@ -520,14 +520,6 @@ class ETLQueries(
       GROUP BY ROLLUP (i_category, i_class)
       ORDER BY lochierarchy DESC, CASE WHEN lochierarchy = 0 THEN i_category END, rank_within_parent
       LIMIT 100
-     """,
-    "q100" ->
-      s"""
-      SELECT * FROM
-      store_sales_denorm_${formatName} a
-      WHERE a.ss_sold_date_sk = '2451457'
-      AND a.ss_item_sk = '167938'
-      AND a. ss_ticket_number = '128544840'
-      """
+     """
    )
 }
