@@ -153,7 +153,7 @@ class ETLBenchmark(conf: ETLBenchmarkConf) extends Benchmark(conf) {
     // writeQueries.filter { case (name: String, sql: String) => Seq("etl1-createTable").contains(name) }.toSeq.sortBy(_._1)
 
     writeQueries.toSeq.sortBy(_._1).foreach { case (name, sql) =>
-      //runQuery(sql, iteration = Some(1), queryName = name)
+      runQuery(sql, iteration = Some(1), queryName = name)
       // Print table stats
       if (conf.formatName == "iceberg") {
         runQuery(s"SELECT * FROM spark_catalog.${dbName}.store_sales_denorm_${formatName}.snapshots",
