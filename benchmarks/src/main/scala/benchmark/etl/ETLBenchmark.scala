@@ -104,7 +104,7 @@ class ETLBenchmark(conf: ETLBenchmarkConf) extends Benchmark(conf) {
       //       as such we're reusing primary key we're generally using for store_sales in TPC-DS benchmarks
       // '${if (writeMode == "copy-on-write") "cow" else "mor"}'
       s"""TBLPROPERTIES (
-         |  type = 'mor',
+         |  type = 'cow',
          |  primaryKey = 'ss_item_sk,ss_ticket_number',
          |  preCombineField = 'ss_sold_time_sk',
          |  'hoodie.table.name' = 'store_sales_denorm_${formatName}',
