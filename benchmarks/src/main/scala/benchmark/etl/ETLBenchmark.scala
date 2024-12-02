@@ -104,7 +104,7 @@ class ETLBenchmark(conf: ETLBenchmarkConf) extends Benchmark(conf) {
       //       as such we're reusing primary key we're generally using for store_sales in TPC-DS benchmarks
       // '${if (writeMode == "copy-on-write") "cow" else "mor"}'
       s"""TBLPROPERTIES (
-         |  type = 'cow',
+         |  type = 'mor',
          |  primaryKey = 'ss_item_sk,ss_ticket_number',
          |  preCombineField = 'ss_sold_time_sk',
          |  'hoodie.table.name' = 'store_sales_denorm_${formatName}',
@@ -115,7 +115,11 @@ class ETLBenchmark(conf: ETLBenchmarkConf) extends Benchmark(conf) {
          |  'hoodie.datasource.write.hive_style_partitioning' = 'true',
          |  'hoodie.sql.insert.mode'= 'non-strict',
          |  'hoodie.combine.before.insert' = 'false',
-         |  'hoodie.metadata.enable' = 'true'
+         |  'hoodie.metadata.enable' = 'true',
+         |  'hoodie.index.type' = 'RECORD_INDEX',
+         |  'hoodie.metadata.record.index.enable' = 'true',
+         |  'hoodie.metadata.record.index.min.filegroup.count' = 100,
+         |  'hoodie.metadata.index.column.stats.enable' = 'true'
          |)""".stripMargin
 
     case "delta" => ""
@@ -149,6 +153,10 @@ class ETLBenchmark(conf: ETLBenchmarkConf) extends Benchmark(conf) {
     runQuery(s"CREATE DATABASE IF NOT EXISTS ${dbName}", s"etl0.2-create-database")
     runQuery(s"USE $dbName", s"etl0.3-use-database")
     runQuery(s"DROP TABLE IF EXISTS store_sales_denorm_${formatName}", s"etl0.4-drop-table")
+    runQuery(s"SET hoodie.metadata.enable=true")
+    runQuery(s"SET hoodie.metadata.index.column.stats.enable=true")
+    runQuery(s"SET hoodie.metadata.record.index.enable=true")
+    runQuery(s"SET hoodie.enable.data.skipping=true")
     // To just run limited ETL's
     // writeQueries.filter { case (name: String, sql: String) => Seq("etl1-createTable").contains(name) }.toSeq.sortBy(_._1)
 
