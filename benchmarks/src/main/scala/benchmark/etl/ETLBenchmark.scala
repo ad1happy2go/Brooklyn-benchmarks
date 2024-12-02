@@ -119,7 +119,8 @@ class ETLBenchmark(conf: ETLBenchmarkConf) extends Benchmark(conf) {
          |  'hoodie.index.type' = 'RECORD_INDEX',
          |  'hoodie.metadata.record.index.enable' = 'true',
          |  'hoodie.metadata.record.index.min.filegroup.count' = 100,
-         |  'hoodie.metadata.index.column.stats.enable' = 'true'
+         |  'hoodie.metadata.index.column.stats.enable' = 'true',
+         |  'hoodie.metadata.index.column.stats.max.columns.to.index' = '37'
          |)""".stripMargin
 
     case "delta" => ""
@@ -157,6 +158,7 @@ class ETLBenchmark(conf: ETLBenchmarkConf) extends Benchmark(conf) {
     runQuery(s"SET hoodie.metadata.index.column.stats.enable=true")
     runQuery(s"SET hoodie.metadata.record.index.enable=true")
     runQuery(s"SET hoodie.enable.data.skipping=true")
+    runQuery(s"SET hoodie.metadata.index.column.stats.max.columns.to.index=37")
     // To just run limited ETL's
     // writeQueries.filter { case (name: String, sql: String) => Seq("etl1-createTable").contains(name) }.toSeq.sortBy(_._1)
 
