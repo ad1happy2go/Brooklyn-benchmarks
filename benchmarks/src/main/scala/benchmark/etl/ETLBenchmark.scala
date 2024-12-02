@@ -118,9 +118,11 @@ class ETLBenchmark(conf: ETLBenchmarkConf) extends Benchmark(conf) {
          |  'hoodie.metadata.enable' = 'true',
          |  'hoodie.index.type' = 'RECORD_INDEX',
          |  'hoodie.metadata.record.index.enable' = 'true',
-         |  'hoodie.metadata.record.index.min.filegroup.count' = 100,
+         |  'hoodie.metadata.record.index.min.filegroup.count' = 1000,
+         |  'hoodie.metadata.record.index.max.filegroup.count' = 1000,
          |  'hoodie.metadata.index.column.stats.enable' = 'true',
-         |  'hoodie.metadata.index.column.stats.max.columns.to.index' = '37'
+         |  'hoodie.metadata.index.column.stats.max.columns.to.index' = '37',
+         |  'hoodie.datasource.write.row.writer.enable' = 'false'
          |)""".stripMargin
 
     case "delta" => ""
